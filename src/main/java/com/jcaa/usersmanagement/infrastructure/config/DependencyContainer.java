@@ -65,7 +65,7 @@ public final class DependencyContainer implements IApplicationRunner {
     // ajustar múltiples puntos de acoplamiento.
     // Clean Code - Regla 19 (temporal coupling): además, este patrón init() → uso
     // establece un orden implícito frágil que el diseño no encapsula ni protege.
-    userRepository.init();
+  
 
     final JavaMailEmailSenderAdapter emailSender = new JavaMailEmailSenderAdapter(buildSmtpConfig(properties));
     final EmailNotificationService emailNotification = new EmailNotificationService(emailSender);
