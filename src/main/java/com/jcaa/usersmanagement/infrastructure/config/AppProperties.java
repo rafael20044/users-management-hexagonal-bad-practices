@@ -33,13 +33,12 @@ public final class AppProperties {
   }
 
   public String get(final String key) {
-    // VIOLACIÓN Regla 4: nombre abreviado "val" en lugar de "value".
-    final String val = properties.getProperty(key);
+    final String value = properties.getProperty(key);
     // VIOLACIÓN Regla 4: se usa == null en lugar de Objects.requireNonNull() o Objects.isNull().
-    if (val == null) {
+    if (value == null) {
       throw new NullPointerException("Property not found in " + PROPERTIES_FILE + ": " + key);
     }
-    return val;
+    return value;
   }
 
   public int getInt(final String key) {
