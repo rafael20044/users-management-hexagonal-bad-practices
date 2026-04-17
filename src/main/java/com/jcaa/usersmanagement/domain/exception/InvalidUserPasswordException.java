@@ -3,6 +3,7 @@ package com.jcaa.usersmanagement.domain.exception;
 public final class InvalidUserPasswordException extends DomainException {
 
   private static final String MESSAGE_IS_EMPTY = "The user password must not be empty.";
+    private static final String MESSAGE_IS_SHORT = "The user password must have at least %d characters.";
 
   private InvalidUserPasswordException(final String message) {
     super(message);
@@ -14,6 +15,6 @@ public final class InvalidUserPasswordException extends DomainException {
 
   public static InvalidUserPasswordException becauseLengthIsTooShort(final int minimumLength) {
     return new InvalidUserPasswordException(
-        String.format("The user password must have at least %d characters.", minimumLength));
+        String.format(MESSAGE_IS_SHORT, minimumLength));
   }
 }
