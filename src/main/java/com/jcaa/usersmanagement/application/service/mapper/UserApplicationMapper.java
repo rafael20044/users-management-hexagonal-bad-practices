@@ -40,18 +40,12 @@ public class UserApplicationMapper {
       passwordToUse = UserPassword.fromPlainText(command.password());
     }
 
-    // Clean Code - Regla 24: mismo concepto que "correo" de arriba, pero renombrado
-    // sin razón a "correoElectronico". El lector no puede saber si son conceptos distintos.
-    final String correoElectronico = command.email();
+    final String email = command.email();
 
-    // EFECTO CASCADA de la Regla 15 en UserModel:
-    // Al usar @Data en vez de @Value, el modelo es mutable. El siguiente llamador
-    // podría hacer userToUpdate.setStatus(BLOCKED) en cualquier momento después
-    // de construirlo, sin pasar por ninguna regla de dominio.
     return new UserModel(
         new UserId(command.id()),
         new UserName(command.name()),
-        new UserEmail(correoElectronico),
+        new UserEmail(email),
         passwordToUse,
         UserRole.fromString(command.role()),
         UserStatus.fromString(command.status()));
