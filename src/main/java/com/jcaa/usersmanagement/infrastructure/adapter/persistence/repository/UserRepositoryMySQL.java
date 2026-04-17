@@ -21,7 +21,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -69,12 +68,8 @@ public final class UserRepositoryMySQL
 
   @Override
   public UserModel save(final UserModel user) {
-    // Clean Code - Regla 10: comentarios redundantes que repiten lo que ya dice el código.
-    // transformar el modelo de dominio a DTO de persistencia
     final UserPersistenceDto dto = UserPersistenceMapper.fromModelToDto(user);
-    // ejecutar la consulta de inserción en la base de datos
     executeSave(dto);
-    // buscar y retornar el usuario recién guardado
     return findByIdOrFail(user.getId());
   }
 
