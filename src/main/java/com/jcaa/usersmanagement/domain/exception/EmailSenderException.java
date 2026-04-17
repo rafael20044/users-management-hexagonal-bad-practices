@@ -2,14 +2,11 @@ package com.jcaa.usersmanagement.domain.exception;
 
 public final class EmailSenderException extends DomainException {
 
-  // VIOLACIÓN Regla 9 (Clean Code): constructores public en una excepción que debería usar
-  // factory methods con constructores privados para controlar cómo se instancia.
-  // Así cualquier clase puede crear excepciones con mensajes arbitrarios.
-  public EmailSenderException(final String message) {
+  private EmailSenderException(final String message) {
     super(message);
   }
 
-  public EmailSenderException(final String message, final Throwable cause) {
+  private EmailSenderException(final String message, final Throwable cause) {
     super(message, cause);
   }
 
