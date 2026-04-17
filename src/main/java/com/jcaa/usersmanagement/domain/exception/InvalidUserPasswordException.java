@@ -2,12 +2,14 @@ package com.jcaa.usersmanagement.domain.exception;
 
 public final class InvalidUserPasswordException extends DomainException {
 
+  private static final String MESSAGE_IS_EMPTY = "The user password must not be empty.";
+
   private InvalidUserPasswordException(final String message) {
     super(message);
   }
 
   public static InvalidUserPasswordException becauseValueIsEmpty() {
-    return new InvalidUserPasswordException("The user password must not be empty.");
+    return new InvalidUserPasswordException(MESSAGE_IS_EMPTY);
   }
 
   public static InvalidUserPasswordException becauseLengthIsTooShort(final int minimumLength) {
