@@ -21,12 +21,6 @@ import java.util.List;
 public class UserPersistenceMapper {
 
   public UserPersistenceDto fromModelToDto(final UserModel user) {
-    // Clean Code - Regla 14 (Ley de Deméter):
-    // Cada línea encadena dos llamadas: user → getValue object → .value().
-    // Por ejemplo: user.getId().value() navega al interior del value object UserId
-    // para extraer el String. El mapper no debería acceder a los internals del value object;
-    // debería existir un método user.getIdValue() o delegarse al propio objeto.
-    // La Ley de Deméter dice: habla solo con tus amigos directos, no con los amigos de tus amigos.
     return new UserPersistenceDto(
         user.getIdValue(),
         user.getNameValue(),
