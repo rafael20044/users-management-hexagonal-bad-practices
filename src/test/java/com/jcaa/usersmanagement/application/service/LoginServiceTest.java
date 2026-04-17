@@ -9,6 +9,7 @@ import com.jcaa.usersmanagement.application.service.dto.command.LoginCommand;
 import com.jcaa.usersmanagement.domain.enums.UserRole;
 import com.jcaa.usersmanagement.domain.enums.UserStatus;
 import com.jcaa.usersmanagement.domain.exception.InvalidCredentialsException;
+import com.jcaa.usersmanagement.domain.exception.InvalidUserEmailException;
 import com.jcaa.usersmanagement.domain.model.UserModel;
 import com.jcaa.usersmanagement.domain.valueobject.UserEmail;
 import com.jcaa.usersmanagement.domain.valueobject.UserId;
@@ -38,9 +39,7 @@ class LoginServiceTest {
 
   @BeforeEach
   void setUp() {
-    try (final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
-      service = new LoginService(getUserByEmailPort, validatorFactory.getValidator());
-    }
+      service = new LoginService(getUserByEmailPort);
   }
 
   @Test
@@ -125,7 +124,7 @@ class LoginServiceTest {
     final LoginCommand command = new LoginCommand("no-es-email", "short");
 
     // Act & Assert
-    assertThrows(ConstraintViolationException.class, () -> service.execute(command));
+    assertThrows(InvalidUserEmailException.class, () -> service.execute(command));
     verifyNoInteractions(getUserByEmailPort);
   }
 }

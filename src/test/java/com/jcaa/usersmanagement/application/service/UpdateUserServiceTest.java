@@ -10,6 +10,8 @@ import com.jcaa.usersmanagement.application.port.out.UpdateUserPort;
 import com.jcaa.usersmanagement.application.service.dto.command.UpdateUserCommand;
 import com.jcaa.usersmanagement.domain.enums.UserRole;
 import com.jcaa.usersmanagement.domain.enums.UserStatus;
+import com.jcaa.usersmanagement.domain.exception.DomainException;
+import com.jcaa.usersmanagement.domain.exception.InvalidUserIdException;
 import com.jcaa.usersmanagement.domain.exception.UserAlreadyExistsException;
 import com.jcaa.usersmanagement.domain.exception.UserNotFoundException;
 import com.jcaa.usersmanagement.domain.model.UserModel;
@@ -59,8 +61,7 @@ class UpdateUserServiceTest {
               updateUserPort,
               getUserByIdPort,
               getUserByEmailPort,
-              emailNotificationService,
-              validatorFactory.getValidator());
+              emailNotificationService);
     }
 
     existingUser =
@@ -160,7 +161,7 @@ class UpdateUserServiceTest {
         new UpdateUserCommand("", "Jo", "no-es-email", null, "MEMBER", "ACTIVE");
 
     // Act & Assert
-    assertThrows(ConstraintViolationException.class, () -> service.execute(command));
+    assertThrows(DomainException.class, () -> service.execute(command));
     verifyNoInteractions(updateUserPort, getUserByIdPort, getUserByEmailPort);
   }
 }

@@ -76,11 +76,11 @@ public final class DependencyContainer implements IApplicationRunner {
     final CreateUserUseCase createUserUseCase = new CreateUserService(userRepository, userRepository, emailNotification,
         validator);
     final UpdateUserUseCase updateUserUseCase = new UpdateUserService(userRepository, userRepository, userRepository,
-        emailNotification, validator);
+        emailNotification);
     final DeleteUserUseCase deleteUserUseCase = new DeleteUserService(userRepository, userRepository, validator);
     final GetUserByIdUseCase getUserByIdUseCase = new GetUserByIdService(userRepository);
     final GetAllUsersUseCase getAllUsersUseCase = new GetAllUsersService(userRepository);
-    final LoginUseCase loginUseCase = new LoginService(userRepository, validator);
+    final LoginUseCase loginUseCase = new LoginService(userRepository);
 
     this.userController = new UserController(
         createUserUseCase,
