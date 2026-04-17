@@ -78,7 +78,7 @@ public final class DependencyContainer implements IApplicationRunner {
     final UpdateUserUseCase updateUserUseCase = new UpdateUserService(userRepository, userRepository, userRepository,
         emailNotification, validator);
     final DeleteUserUseCase deleteUserUseCase = new DeleteUserService(userRepository, userRepository, validator);
-    final GetUserByIdUseCase getUserByIdUseCase = new GetUserByIdService(userRepository, validator);
+    final GetUserByIdUseCase getUserByIdUseCase = new GetUserByIdService(userRepository);
     final GetAllUsersUseCase getAllUsersUseCase = new GetAllUsersService(userRepository);
     final LoginUseCase loginUseCase = new LoginService(userRepository, validator);
 

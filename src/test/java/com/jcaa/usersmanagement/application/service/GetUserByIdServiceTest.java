@@ -8,6 +8,7 @@ import com.jcaa.usersmanagement.application.port.out.GetUserByIdPort;
 import com.jcaa.usersmanagement.application.service.dto.query.GetUserByIdQuery;
 import com.jcaa.usersmanagement.domain.enums.UserRole;
 import com.jcaa.usersmanagement.domain.enums.UserStatus;
+import com.jcaa.usersmanagement.domain.exception.InvalidUserIdException;
 import com.jcaa.usersmanagement.domain.exception.UserNotFoundException;
 import com.jcaa.usersmanagement.domain.model.UserModel;
 import com.jcaa.usersmanagement.domain.valueobject.UserEmail;
@@ -40,9 +41,8 @@ class GetUserByIdServiceTest {
 
   @BeforeEach
   void setUp() {
-    try (final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
-      service = new GetUserByIdService(getUserByIdPort, validatorFactory.getValidator());
-    }
+      service = new GetUserByIdService(getUserByIdPort);
+
   }
 
   // ── flujo feliz
@@ -76,13 +76,13 @@ class GetUserByIdServiceTest {
   }
 
   @Test
-  @DisplayName("execute() lanza ConstraintViolationException cuando el id está en blanco")
+  @DisplayName("execute() lanza MethodArgumentNotValidException cuando el id está en blanco")
   void shouldThrowWhenQueryIsInvalid() {
     // Arrange
     final GetUserByIdQuery query = new GetUserByIdQuery("");
 
     // Act & Assert
-    assertThrows(ConstraintViolationException.class, () -> service.execute(query));
+    assertThrows(InvalidUserIdException.class, () -> service.execute(query));
     verifyNoInteractions(getUserByIdPort);
   }
 }
