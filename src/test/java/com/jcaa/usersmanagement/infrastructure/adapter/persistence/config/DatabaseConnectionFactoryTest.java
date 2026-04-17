@@ -30,8 +30,6 @@ class DatabaseConnectionFactoryTest {
   @Mock private Connection mockConnection;
 
   private DatabaseConfig config;
-  // VIOLACIÓN Regla 4 (consecuencia): el factory ya no es @UtilityClass, hay que instanciarlo.
-  private DatabaseConnectionFactory factory;
 
   @BeforeEach
   void setUp() {
