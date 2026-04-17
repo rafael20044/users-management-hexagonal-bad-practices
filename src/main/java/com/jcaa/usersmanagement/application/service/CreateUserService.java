@@ -32,7 +32,6 @@ public final class CreateUserService implements CreateUserUseCase {
 
   @Override
   public UserModel execute(final CreateUserCommand command) {
-    // Clean Code - Regla 1: cada función debe hacer una sola cosa.
     // Clean Code - Regla 2: las funciones deben ser cortas.
     // Clean Code - Regla 3: un solo nivel de abstracción por función.
     // Este método mezcla: validación de constraints, log de PII, verificación de negocio,
@@ -43,19 +42,14 @@ public final class CreateUserService implements CreateUserUseCase {
     // Clean Code - Regla 9: se usa comentario para tapar un bloque poco expresivo.
     // La regla dice: antes de comentar, intenta mejorar nombres y extraer funciones.
     // validar campos del command
-    final Set<ConstraintViolation<CreateUserCommand>> violations = validator.validate(command);
-    if (!violations.isEmpty()) {
-      throw new ConstraintViolationException(violations);
-    }
+    validateCommand(command);
 
     log.info("Creando usuario con email=" + command.email() + ", nombre=" + command.name());
 
     // Clean Code - Regla 10: comentario redundante — el código siguiente ya dice lo mismo.
     // verificar si el email ya existe en la base de datos
     final UserEmail email = new UserEmail(command.email());
-    if (getUserByEmailPort.getByEmail(email).isPresent()) {
-      throw UserAlreadyExistsException.becauseEmailAlreadyExists(email.value());
-    }
+    validateEmail(email);
 
     // Clean Code - Regla 3: aquí se mezcla lógica de negocio de alto nivel (crear usuario)
     // con detalles de construcción de bajo nivel (new UserId, new UserName, etc.).
@@ -78,5 +72,18 @@ public final class CreateUserService implements CreateUserUseCase {
 
     // retornar el usuario guardado
     return savedUser;
+  }
+
+  private void validateCommand(final CreateUserCommand command) {
+    final Set<ConstraintViolation<CreateUserCommand>> violations = validator.validate(command);
+    if (!violations.isEmpty()) {
+      throw new ConstraintViolationException(violations);
+    }
+  }
+
+  private void validateEmail(final UserEmail email) {
+    if (getUserByEmailPort.getByEmail(email).isPresent()) {
+      throw UserAlreadyExistsException.becauseEmailAlreadyExists(email.value());
+    }
   }
 }
