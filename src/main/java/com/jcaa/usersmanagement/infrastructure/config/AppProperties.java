@@ -34,8 +34,7 @@ public final class AppProperties {
 
   public String get(final String key) {
     final String value = properties.getProperty(key);
-    // VIOLACIÓN Regla 4: se usa == null en lugar de Objects.requireNonNull() o Objects.isNull().
-    if (value == null) {
+    if (Objects.isNull(value)) {
       throw new NullPointerException("Property not found in " + PROPERTIES_FILE + ": " + key);
     }
     return value;
