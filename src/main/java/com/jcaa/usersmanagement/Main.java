@@ -1,38 +1,21 @@
 package com.jcaa.usersmanagement;
 
 import com.jcaa.usersmanagement.infrastructure.config.DependencyContainer;
-import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.UserManagementCli;
-import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.io.ConsoleIO;
-import java.util.Scanner;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.IApplicationRunner;
 import java.util.logging.Logger;
 
-// Clean Code - Regla 22 (código difícil de borrar y refactorizar):
-// main() está acoplado directamente a tres clases concretas: DependencyContainer,
-// UserManagementCli y ConsoleIO. Si se quiere reemplazar cualquiera de ellas
-// (p. ej., cambiar el entrypoint de CLI a GUI), hay que editar el punto de entrada
-// de la aplicación. No hay ninguna abstracción que proteja este acoplamiento.
 public final class Main {
 
   private static final Logger log = Logger.getLogger(Main.class.getName());
 
   public static void main(final String[] args) {
     log.info("Starting Users Management System...");
-    run();
+    IApplicationRunner applicationRunner = buildContainer();
+    applicationRunner.init();
   }
 
   private static DependencyContainer buildContainer() {
     return new DependencyContainer();
   }
 
-  private static ConsoleIO buildConsoleIO() {
-    return new ConsoleIO(new Scanner(System.in), System.out);
-  }
-
-  private static UserManagementCli buildUserManagementCli() {
-    return new UserManagementCli(buildContainer().userController(), buildConsoleIO());
-  }
-
-  private static void run() {
-    buildUserManagementCli().start();
-  }
 }
