@@ -11,13 +11,13 @@ public final class ConsoleIO {
   private final PrintStream out;
 
   public String readRequired(final String prompt) {
+    final String MESSAGE_IS_BLANK = "Value cannot be blank. Please try again.";
     String value;
     do {
       out.print(prompt);
       value = scanner.nextLine().trim();
       if (value.isBlank()) {
-        // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
-        out.println("  Value cannot be blank. Please try again.");
+        out.println(MESSAGE_IS_BLANK);
       }
     } while (value.isBlank());
     return value;
