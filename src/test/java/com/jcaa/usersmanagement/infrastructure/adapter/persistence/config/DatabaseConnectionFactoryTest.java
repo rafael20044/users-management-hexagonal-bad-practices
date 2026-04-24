@@ -16,7 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-// VIOLACIÓN Regla 11: se eliminó el javadoc de la clase.
+/**
+ * Tests for {@link DatabaseConnectionFactory}.
+ * Validates the creation of database connections and exception handling.
+ */
 @DisplayName("DatabaseConnectionFactory")
 @ExtendWith(MockitoExtension.class)
 class DatabaseConnectionFactoryTest {

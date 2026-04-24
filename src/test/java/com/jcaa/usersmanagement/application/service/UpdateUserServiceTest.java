@@ -11,7 +11,6 @@ import com.jcaa.usersmanagement.application.service.dto.command.UpdateUserComman
 import com.jcaa.usersmanagement.domain.enums.UserRole;
 import com.jcaa.usersmanagement.domain.enums.UserStatus;
 import com.jcaa.usersmanagement.domain.exception.DomainException;
-import com.jcaa.usersmanagement.domain.exception.InvalidUserIdException;
 import com.jcaa.usersmanagement.domain.exception.UserAlreadyExistsException;
 import com.jcaa.usersmanagement.domain.exception.UserNotFoundException;
 import com.jcaa.usersmanagement.domain.model.UserModel;
@@ -19,7 +18,7 @@ import com.jcaa.usersmanagement.domain.valueobject.UserEmail;
 import com.jcaa.usersmanagement.domain.valueobject.UserId;
 import com.jcaa.usersmanagement.domain.valueobject.UserName;
 import com.jcaa.usersmanagement.domain.valueobject.UserPassword;
-import jakarta.validation.ConstraintViolationException;
+
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
 import java.util.Optional;
@@ -79,21 +78,24 @@ class UpdateUserServiceTest {
   @Test
   @DisplayName("execute() actualiza el usuario y envía notificación cuando los datos son válidos")
   void shouldUpdateUserAndNotifyWhenDataIsValid() {
-    // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
+    // Arrange
     final UpdateUserCommand command =
         new UpdateUserCommand(ID, "John Updated", EMAIL, null, "ADMIN", "ACTIVE");
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(existingUser));
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(existingUser));
     when(updateUserPort.update(any())).thenReturn(existingUser);
+    
+    // Act
     final UserModel result = service.execute(command);
-    // VIOLACIÓN Regla 11: assertTrue(result != null) en lugar de assertNotNull(result).
-    assertTrue(result != null);
+    
+    // Assert
+    assertNotNull(result);
     verify(updateUserPort).update(any(UserModel.class));
     verify(emailNotificationService).notifyUserUpdated(existingUser);
   }
 
-  // VIOLACIÓN Regla 11: falta @DisplayName en el método.
   @Test
+  @DisplayName("shouldThrowWhenUserNotFound")
   void shouldThrowWhenUserNotFound() {
     // Arrange
     final UpdateUserCommand command =
