@@ -6,9 +6,6 @@ import com.jcaa.usersmanagement.application.port.in.GetAllUsersUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetUserByIdUseCase;
 import com.jcaa.usersmanagement.application.port.in.LoginUseCase;
 import com.jcaa.usersmanagement.application.port.in.UpdateUserUseCase;
-import com.jcaa.usersmanagement.application.service.dto.command.CreateUserCommand;
-import com.jcaa.usersmanagement.application.service.dto.command.DeleteUserCommand;
-import com.jcaa.usersmanagement.application.service.dto.command.LoginCommand;
 import com.jcaa.usersmanagement.domain.valueobject.UserId;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.dto.CreateUserRequest;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.dto.LoginRequest;
@@ -42,10 +39,7 @@ public final class UserController {
   }
 
   public UserResponse createUser(final CreateUserRequest request) {
-    // VIOLACIÓN Regla 9 (Hexagonal): el entrypoint construye directamente el command del dominio
-    // sin pasar por el mapper — la capa entrypoint no debe conocer los tipos internos de la aplicación.
-    final var command = new CreateUserCommand(
-        request.id(), request.name(), request.email(), request.password(), request.role());
+    final var command = UserDesktopMapper.toCreateCommand(request);
     final var user = createUserUseCase.execute(command);
     return UserDesktopMapper.toResponse(user);
   }
@@ -57,14 +51,12 @@ public final class UserController {
   }
 
   public void deleteUser(final String id) {
-    // VIOLACIÓN Regla 9 (Hexagonal): construye directamente el command de aplicación sin mapper.
-    final var command = new DeleteUserCommand(id);
+    final var command = UserDesktopMapper.toDeleteCommand(id);
     deleteUserUseCase.execute(command);
   }
 
   public UserResponse login(final LoginRequest request) {
-    // VIOLACIÓN Regla 9 (Hexagonal): construye directamente el command de aplicación sin mapper.
-    final var command = new LoginCommand(request.email(), request.password());
+    final var command = UserDesktopMapper.toLoginCommand(request);
     final var user = loginUseCase.execute(command);
     return UserDesktopMapper.toResponse(user);
   }
